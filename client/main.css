@@ -35,3 +35,11 @@ ul {
 .checked [name=todoItem]:focus {
   background-color: #f0f0f0;
 }
+
+body {
+  font-family: sans-serif;
+}
+
+.container {
+  margin-left: 30px;
+}
