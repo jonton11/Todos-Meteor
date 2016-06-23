@@ -89,6 +89,7 @@ standard-minifier-css@1.0.7
 standard-minifier-js@1.0.7
 templating@1.1.11
 templating-tools@1.0.4
+themeteorchef:jquery-validation@1.14.0
 tracker@1.0.14
 twitter@1.1.10
 ui@1.0.11
