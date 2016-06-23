@@ -49,27 +49,27 @@ Template.lists.helpers({
 
 // Events
 //--------------------------------------------------------------------------
+
+// Task events
 Template.todos.events({
   'submit form': function(event){
     event.preventDefault();
     var todoName = $('[name="todoName"]').val();
-    var currentUser = Meteor.userId();
     var currentList = this._id;
-    Todos.insert({
-      name: todoName,
-      completed: false,
-      createdAt: new Date(),
-      createdBy: currentUser,
-      listId: currentList
+    Meteor.call('createListItem', todoName, currentList, function(error) {
+      if (error) {
+        console.log(error.reason);
+      } else {
+        $('[name="todoName"]').val('');
+      }
     });
-    $('[name="todoName"]').val('');
   },
   'click .delete-todo': function(event) {
     event.preventDefault();
     var documentId = this._id;
     var confirm = window.confirm("Delete this task?");
     if (confirm) {
-      Todos.remove({_id: documentId});
+      Meteor.call('deleteListItem', documentId);
     }
   },
   'keyup [name=todoItem]': function(event){
@@ -79,35 +79,42 @@ Template.todos.events({
     } else {
       var documentId = this._id;
       var todoItem = $(event.target).val();
-      Todos.update({_id: documentId}, {$set: { name: todoItem }});
+      Meteor.call('editListItem', documentId, todoItem, function(error) {
+        if (error) {
+          console.log(error.reason);
+        }
+      });
     }
   },
   'change [type=checkbox]': function() {
     var documentId = this._id;
     var isCompleted = this.completed;
-    if (isCompleted) {
-      Todos.update({_id: documentId}, {$set: {completed: false}});
-    } else {
-      Todos.update({_id: documentId}, {$set: {completed: true}});
-    }
+    Meteor.call('completeListItem', documentId, isCompleted, function(error) {
+      if (error) {
+        console.log(error.reason);
+      }
+    });
   }
 });
 
+// Adding Lists
 Template.addList.events({
   'submit form': function(event){
     event.preventDefault();
     var listName = $('[name=listName]').val();
-    var currentUser = Meteor.userId();
-    Lists.insert({
-      name: listName,
-      createdBy: currentUser
-    }, function(error, results) {
-      Router.go('listPage', { _id: results });
+    Meteor.call('createNewList', listName, function(error, results) {
+      if (error) {
+        // TODO: Find a better error to throw than console.log();
+        console.log(error.reason);
+      } else {
+        Router.go('listPage', { _id: results });
+        $('[name=listName]').val('');
+      }
     });
-    $('[name=listName]').val('');
   }
 });
 
+// Registration events
 Template.register.events({
   'submit form': function(event){
     event.preventDefault();
@@ -115,6 +122,7 @@ Template.register.events({
   }
 });
 
+// Navigation events
 Template.navigation.events({
   'click .logout': function(event) {
     event.preventDefault();
@@ -123,6 +131,7 @@ Template.navigation.events({
   }
 })
 
+// Login feature
 Template.login.events({
   'submit form': function(event) {
     event.preventDefault();
@@ -153,6 +162,7 @@ $.validator.setDefaults({
   }
 });
 
+// Login validations
 Template.login.onRendered(function() {
   var validator = $('.login').validate({
     submitHandler: function(event){
@@ -182,6 +192,7 @@ Template.login.onRendered(function() {
 
 });
 
+// Registration validations
 Template.register.onRendered(function() {
   var validator = $('.register').validate({
     submitHandler: function(event) {
@@ -205,6 +216,7 @@ Template.register.onRendered(function() {
   });
 });
 
+// List subscription to server
 Template.lists.onCreated(function() {
    this.subscribe('lists');
 })
