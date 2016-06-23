@@ -4,8 +4,19 @@ import { Meteor } from 'meteor/meteor';
 
 Meteor.startup(() => {
   // code to run on server at startup
-
 });
+
+// "Publish" a collection so that the client can 'subscribe' to it
+// This is for security reasons
+Meteor.publish('lists', function() {
+  var currentUser = this.userId;
+  return Lists.find({ createdBy: currentUser });
+});
+
+Meteor.publish('todos', function(currentList) {
+  var currentUser = this.userId;
+  return Todos.find({ createdBy: currentUser, listId: currentList });
+})
 
 // Collections
 Todos = new Meteor.Collection('todos');

@@ -40,6 +40,10 @@ li {
   margin-left: 30px;
 }
 
+.fa-times {
+  color: red;
+}
+
 input.error {
   background-color: rgb(255, 231, 231);
 }

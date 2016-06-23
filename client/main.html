@@ -21,11 +21,16 @@
   </div>
 </template>
 
+<!-- Loading Template-->
+<template name="loading">
+  <p>Loading...</p>
+</template>
+
 <!-- Navbar -->
 <template name="navigation">
-  <nav class="navbar navbar-default" role="navigation">
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
-      <ul class="nav navbar-nav navbar-left">
+      <ul class="nav navbar-nav">
         <li><a href={{pathFor route='home'}}>Home</a></li>
         {{#if currentUser}}
           <!-- <li>{{currentUser}}</li> -->
@@ -81,7 +86,7 @@
   <li class="{{checked}}">
     <input type="checkbox" {{checked}}>
     <input type="text" value="{{name}}" name="todoItem">
-    [<a href="#" class="delete-todo">Delete</a>]
+    [<a href="#" class="delete-todo"><i class="fa fa-times" aria-hidden="true"></i></a>]
   </li>
 </template>
 
@@ -106,9 +111,15 @@
 <template name="lists">
   <h2> Lists </h2>
   {{> addList}}
-  {{#each list}}
-    <li><a href={{pathFor route="listPage"}}>{{name}}</a></li>
-  {{/each}}
+  <ul>
+    {{#if Template.subscriptionsReady}}
+      {{#each list}}
+        <li><a href={{pathFor route="listPage"}}>{{name}}</a></li>
+      {{/each}}
+    {{else}}
+      <li> Loading... </li>
+    {{/if}}
+  </ul>
 </template>
 
 <!-- Add List -->

@@ -1,4 +1,7 @@
 // Client
+// 'Subscribe' to the 'publication' of the server for security
+// This is so anyone cannot add/remove items from the db via console
+// => We moved function this into router.js to only load necessary data
 
 // Collections (Models)
 //--------------------------------------------------------------------------
@@ -201,3 +204,7 @@ Template.register.onRendered(function() {
     }
   });
 });
+
+Template.lists.onCreated(function() {
+   this.subscribe('lists');
+})
