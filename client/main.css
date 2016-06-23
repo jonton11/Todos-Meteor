@@ -1,5 +1,5 @@
 /* CSS declarations go here */
-ul {
+li {
   list-style: none;
 }
 
@@ -34,10 +34,6 @@ ul {
 .checked [name=todoItem]:hover,
 .checked [name=todoItem]:focus {
   background-color: #f0f0f0;
-}
-
-body {
-  font-family: sans-serif;
 }
 
 .container {

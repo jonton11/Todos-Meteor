@@ -5,6 +5,65 @@
 </body>
 
 <!-- Templates -->
+<!-- Application Layout -->
+<template name="main">
+  {{> navigation}}
+  <div class="container">
+    <h1> Todos </h1>
+    <hr />
+    {{#if currentUser}}
+      {{> lists}}
+    {{/if}}
+    {{> yield}}
+    <hr />
+    <p> Copyright &copy; Todos, 2016-2017 </p>
+  </div>
+</template>
+
+<!-- Navbar -->
+<template name="navigation">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <ul class="nav navbar-nav navbar-left">
+        <li><a href={{pathFor route='home'}}>Home</a></li>
+        {{#if currentUser}}
+          <!-- <li>{{currentUser}}</li> -->
+          <li><a href="#" class="logout">Logout</a></li>
+        {{else}}
+          <li><a href={{pathFor route='register'}}>Register</a></li>
+          <li><a href={{pathFor route='login'}}>Login</a></li>
+        {{/if}}
+      </ul>
+    </div>
+  </nav>
+</template>
+
+<!-- Home -->
+<template name="home">
+  <p>Welcome to the Todos application.</p>
+</template>
+
+<!-- User Registration -->
+<template name="register">
+  <h2>Register</h2>
+  <form class="register form-group">
+    <p> Email: <input type="email" name="email" placeholder="johnsmith@email.com"/> </p>
+    <p> Password: <input type="password" name="password" /> </p>
+    <p> <input type="submit" value="Register" class="btn btn-default"/> </p>
+  </form>
+</template>
+
+<!-- User Login -->
+<template name="login">
+  <h2>Login</h2>
+  <form class="login form-group">
+    <p> Email: <input type="email" name="email" placeholder="johnsmith@email.com"/> </p>
+    <p>Password: <input type="password" name="password" /></p>
+    <p><input type="submit" value="Login" class="btn btn-default"/></p>
+  </form>
+</template>
+
+<!-- Todo (show) -->
 <template name="todos">
   <!-- <p>{{_id}}</p> -->
   {{> addTodo}}
@@ -16,6 +75,7 @@
   {{> todoCount}}
 </template>
 
+<!-- Todo Items (index) -->
 <template name="todoItem">
   <li class="{{checked}}">
     <input type="checkbox" {{checked}}>
@@ -24,6 +84,7 @@
   </li>
 </template>
 
+<!-- Adding Todo (new/create) -->
 <template name="addTodo">
   <form>
       Create a Task:
@@ -31,6 +92,7 @@
   </form>
 </template>
 
+<!-- Todo Count -->
 <template name="todoCount">
   {{#if totalTodos}}
     <p>
@@ -39,49 +101,7 @@
   {{/if}}
 </template>
 
-
-<template name="register">
-  <h2>Register</h2>
-</template>
-
-<template name="login">
-  <h2>Login</h2>
-</template>
-
-<template name="home">
-  <p>Welcome to the Todos application.</p>
-</template>
-
-<template name="main">
-  {{> navigation}}
-  <div class="container">
-    <h1> Todos </h1>
-    <hr />
-    {{> lists}}
-    {{> yield}}
-    <hr />
-    <p> Copyright &copy; Todos, 2016-2017 </p>
-  </div>
-</template>
-
-<template name="navigation">
-  <nav class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-      <ul class="nav navbar-nav navbar-left">
-        <li><a href={{pathFor route='home'}}>Home</a></li>
-        <li><a href={{pathFor route='register'}}>Register</a></li>
-        <li><a href={{pathFor route='login'}}>Login</a></li>
-      </ul>
-    </div>
-  </nav>
-</template>
-
-<template name="addList">
-  <form>Create a list:
-    <input type="text" placeholder="List name" name="listName" />
-  </form>
-</template>
-
+<!-- Task Lists (index) -->
 <template name="lists">
   <h2> Lists </h2>
   {{> addList}}
@@ -90,6 +110,14 @@
   {{/each}}
 </template>
 
+<!-- Add List -->
+<template name="addList">
+  <form>Create a list:
+    <input type="text" placeholder="List name" name="listName" />
+  </form>
+</template>
+
+<!-- List (Show) Page -->
 <template name="listPage">
   <h2> Tasks: {{name}} </h2>
   {{> todos}}
